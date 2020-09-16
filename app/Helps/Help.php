@@ -1,17 +1,17 @@
 <?php
 /**
  * Created by IntelliJ IDEA.
- * User: LHC
+ * BaseModel: LHC
  * Date: 2020/9/15
  * Time: 17:20
  */
 
-namespace App\Http\Comm;
+namespace App\Helps;
 
 
-trait Common
+class Help
 {
-    public function kk_md5($str)
+    public static function kk_md5($str)
     {
         return md5(sha1($str).config("key"));
     }

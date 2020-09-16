@@ -17,3 +17,5 @@ $router->get('/', function () use ($router) {
 
 $router->get('/user',"UserController@index");
 
+$router->post('/login',"LoginController@doLogin");
+

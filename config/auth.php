@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'api'),
+        'guard' => env('AUTH_GUARD', 'jwt'),
     ],
 
     /*
@@ -35,12 +35,19 @@ return [
     */
 
     'guards' => [
-        'api' => ['driver' => 'api'],
+        'api' => [
+            'driver' => 'api',
+            'provider' => 'user'
+        ],
+        'jwt' => [
+            'driver' => 'jwt',
+            'provider' => 'users'
+        ],
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | User Providers
+    | BaseModel Providers
     |--------------------------------------------------------------------------
     |
     | All authentication drivers have a user provider. This defines how the
@@ -56,7 +63,10 @@ return [
     */
 
     'providers' => [
-        //
+        'users' => [
+            'driver' => 'eloquent',
+            'model'  => \App\Models\User::class,
+        ]
     ],
 
     /*
