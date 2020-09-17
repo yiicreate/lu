@@ -24,7 +24,7 @@ class LoginController extends BaseContorller
 //        var_dump($haser->make(123456));die;
 //        $user = $jwt->getProvider()->retrieveByCredentials($request->only('name', 'password'));
 //        $token = $jwt->login($user);
-        if (! $token = app('auth')->guard('jwt')->attempt($request->only('email', 'password'))) {
+        if (! $token = app('auth')->guard('jwt')->attempt($request->only('name', 'password'))) {
             return response()->json(['user_not_found'], 404);
         }
         return response()->json(compact('token'));

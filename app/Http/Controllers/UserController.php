@@ -18,7 +18,7 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        JWTAuth::
+
 //        var_dump($request);
 //        echo $this->kk_md5("223");
         echo "<br/>";

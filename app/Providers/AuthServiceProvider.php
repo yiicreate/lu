@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Service\UserImp;
+use Illuminate\Auth\AuthManager;
 use Illuminate\Support\ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -29,9 +30,9 @@ class AuthServiceProvider extends ServiceProvider
         // should return either a BaseModel instance or null. You're free to obtain
         // the BaseModel instance via an API token or any other method necessary.
         $this->app['auth']->viaRequest('api', function ($request) {
-            $token = $request->header('api_token');
+            $token = $request->header('token');
             if ($token) {
-                return UserImp::where('api_token', $token)->first();
+                return UserImp::where('api_token', $token)->first(["id","name","api_token"]);
             }
         });
     }
