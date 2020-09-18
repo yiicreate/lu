@@ -15,12 +15,9 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-
-
 $router->post('/login',"LoginController@doLogin");
 
-
-//auth
+//不需要验证登录的
 $router->group(['prefix' => '/'], function () {
     Route::post('login',"LoginController@doLogin");
 //    Route::post('login',                    'LoginController@login');
@@ -28,7 +25,9 @@ $router->group(['prefix' => '/'], function () {
 //    Route::post('logout',                   'LoginController@logout')->name('logout');
 });
 
+//需要验证登录的
 $router->group(['prefix' => '/admin', 'namespace' => "Admin","middleware"=>['auth','permission']], function () {
     Route::get('/refPass',"UserController@refreshPassword");
     Route::get('/user',"UserController@index");
+    Route::get('/p',"UserController@Password");
 });

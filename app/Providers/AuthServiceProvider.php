@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Service\UserImp;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -27,7 +28,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        echo 1;
         // Here you may define how you wish users to be authenticated for your Lumen
         // application. The callback which receives the incoming request instance
         // should return either a BaseModel instance or null. You're free to obtain
@@ -35,7 +35,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->app['auth']->viaRequest('api', function ($request) {
             $token = $request->header('token');
             if ($token) {
-                return User::where('api_token', $token)->first(["id","name","api_token"]);
+                return UserImp::where('api_token', $token)->first(["id","name","api_token"]);
             }
         });
     }

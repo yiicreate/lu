@@ -23,10 +23,8 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        var_dump($this->user);
-        echo "<br/>";
-//        echo Crypt::encrypt("222");
         echo "hello";
+        echo $this->user->id;
     }
 
     /**
@@ -44,6 +42,6 @@ class UserController extends Controller
      */
     public function Password()
     {
-
+        echo 11;
     }
 }

@@ -11,16 +11,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Gate;
 
 class AdminPermission
 {
-    /**
-     * The authentication guard factory instance.
-     *
-     * @var \Illuminate\Contracts\Auth\Factory
-     */
-    protected $admin;
 
     /**
      * Create a new middleware instance.
@@ -42,7 +36,7 @@ class AdminPermission
      */
     public function handle($request, Closure $next, $guard = null)
     {
-
+        var_dump($request->route());
         return $next($request);
     }
 }
