@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Listeners\EventListener;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Hashing\HashManager;
 use Illuminate\Http\Request;
@@ -42,6 +43,7 @@ class UserController extends Controller
      */
     public function Password()
     {
-        echo 11;
+        echo 11333;
+        event(new EventListener(["aaa"]));
     }
 }

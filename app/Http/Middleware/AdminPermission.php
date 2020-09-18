@@ -36,7 +36,7 @@ class AdminPermission
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        var_dump($request->route());
+//        var_dump($request->route());
         return $next($request);
     }
 }

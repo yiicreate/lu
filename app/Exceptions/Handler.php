@@ -45,6 +45,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        if($e instanceof HttpException){
+            return response()->json(['没有找到页面'], 404);
+        }
         return parent::render($request, $e);
     }
 }
