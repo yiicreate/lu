@@ -1,10 +1,14 @@
 <?php
+/**
+ * 用户认证
+ */
 
 namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Auth\RequestGuard;
 use Illuminate\Contracts\Auth\Factory as Auth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\JWTGuard;
 
 class Authenticate
@@ -37,9 +41,18 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
+        $token = $request->header('token');
+        try{
+            app("auth")->guard("jwt")->setToken($token)->getPayload();
+        }catch (JWTException $e){
+            $msg = $e->getMessage();
+            if($msg == 'Token has expired'){
+                return response('token过期', 401);
+            }
+        }
         $guard =  $this->auth->guard($guard);
         if ($guard->guest()) {
-            return response('Unauthorized.', 401);
+            return response('请登录', 401);
         }
         return $next($request);
     }

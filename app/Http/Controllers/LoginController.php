@@ -19,14 +19,17 @@ class LoginController extends BaseContorller
 {
     public function doLogin(Request $request)
     {
-//        $jwt = app('auth')->guard('jwt');
-//        $haser = $jwt->getProvider()->getHasher();
-//        var_dump($haser->make(123456));die;
-//        $user = $jwt->getProvider()->retrieveByCredentials($request->only('name', 'password'));
-//        $token = $jwt->login($user);
-        if (! $token = app('auth')->guard('jwt')->attempt($request->only('name', 'password'))) {
+        $jwt = app('auth')->guard('jwt');
+        //设置过期时间
+        $jwt->setTTL(60*24);
+
+        $user = $jwt->getProvider()->retrieveByCredentials($request->only('name', 'password'));
+        if(!$user){
             return response()->json(['user_not_found'], 404);
         }
+        $token = $jwt->login($user);
+        $user->refreshToken($token);
+
         return response()->json(compact('token'));
     }
 }

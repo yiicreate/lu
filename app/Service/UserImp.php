@@ -6,8 +6,5 @@ use App\Models\User;
 
 class UserImp extends User
 {
-    public function Login()
-    {
-        
-    }
+
 }

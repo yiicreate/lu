@@ -20,7 +20,7 @@ class User extends BaseModel implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email',
+        'name',
     ];
 
     /**
@@ -40,5 +40,31 @@ class User extends BaseModel implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * 修改密码
+     */
+    public function refreshPass($pass)
+    {
+        try{
+            $this->password =$pass;
+            $this->save();
+        }catch (\Exception $exception){
+            echo $exception->getMessage();
+        }
+    }
+
+    /**
+     * 修改token
+     */
+    public function refreshToken($token)
+    {
+        try{
+            $this->api_token =$token;
+            $this->save();
+        }catch (\Exception $exception){
+            echo $exception->getMessage();
+        }
     }
 }

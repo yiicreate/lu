@@ -11,4 +11,9 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 class BaseModel extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable;
+
+    public $timestamps = false;
+
+    protected $dateFormat = 'U';
+
 }
