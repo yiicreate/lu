@@ -25,7 +25,8 @@
             "App\\": "app/"
         },
         "files": [
-            "app/Helps/Help.php"
+            "app/Helps/Help.php",
+            "app/Helps/Token.php"
         ]
     },
     "autoload-dev": {

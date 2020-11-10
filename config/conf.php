@@ -8,11 +8,6 @@
 return [
     'debug' =>env("APP_DEBUG",true),
 
-    'auth' => [
-        'ttl'=>60*24*3,//token有效时间
-    ],
-
-
     //加密秘钥
     'key'=>'',
 

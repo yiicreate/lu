@@ -95,7 +95,7 @@ function err($msg = '失败', $code = 500)
  */
 function encryPass($pass)
 {
-    return \md5(sha1($pass).AUTH_KEY);
+    return hash('sha256',\md5(sha1($pass).AUTH_KEY));
 }
 
 /**
