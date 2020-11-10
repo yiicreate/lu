@@ -15,19 +15,26 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->post('/login',"LoginController@doLogin");
+$router->group([ 'prefix' => '/api' ], function ($router) {
+    $router->post('login', "LoginController@doLogin");
+    //需要验证登录的
+    $router->group([ 'prefix' => '/admin', 'namespace' => "Admin", "middleware" => [ 'auth', 'permission' ] ],
+        function ($router) {
+            //管理员
+            $router->group([ 'prefix' => 'user' ], function () use ($router) {
+                $router->get('refPass', "UserController@refreshPassword");
+                $router->get('self', "UserController@getUser");
+                $router->get('list', "UserController@getlist");
+                $router->get('logout', 'UserController@logout');
 
-//不需要验证登录的
-$router->group(['prefix' => '/'], function () {
-    Route::post('login',"LoginController@doLogin");
-//    Route::post('login',                    'LoginController@login');
-//    Route::get('logout',                    'LoginController@logout')->name('logout');
-//    Route::post('logout',                   'LoginController@logout')->name('logout');
-});
 
-//需要验证登录的
-$router->group(['prefix' => '/admin', 'namespace' => "Admin","middleware"=>['auth','permission']], function () {
-    Route::get('/refPass',"UserController@refreshPassword");
-    Route::get('/user',"UserController@index");
-    Route::get('/p',"UserController@Password");
+                $router->post('lists', "UserController@getlists");
+                $router->post('ad', "UserController@setOne");
+                $router->post('up', "UserController@setOneFId");
+                $router->post('resPass', "UserController@resetPassword");
+            });
+
+
+
+        });
 });

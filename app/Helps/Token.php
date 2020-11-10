@@ -9,31 +9,17 @@
 namespace App\Helps;
 
 
-use Tymon\JWTAuth\JWTManager;
-use Tymon\JWTAuth\Providers\JWT\JWTInterface;
-
 class Token
 {
-    protected $jwt;
-
-    public function __construct(JWTInterface $jwt)
+    public function createToken($uid)
     {
-        $this->jwt = $jwt;
-    }
-
-    public function createToken()
-    {
-        $data = [
-            'a'=>"bbbb",
-        ];
-        $str =  $this->jwt->encode($data);
-//        $str = md5(uniqid(md5(microtime()), true));
-//        $str = sha1($str);
-        return $str;
+        $str = md5(uniqid(md5(microtime(true)),true));
+        $token = sha1($str.$uid);
+        return $token;
     }
 
     public function getToken($token)
     {
-        return $this->jwt->decode($token);
+
     }
 }

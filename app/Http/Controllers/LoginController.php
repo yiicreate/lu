@@ -14,6 +14,10 @@ use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseContorller;
 use Tymon\JWTAuth\JWTGuard;
 use Tymon\JWTAuth\Providers\JWT\JWTInterface;
+use function App\Helps\err;
+use function App\Helps\succ;
+use function App\Helps\success;
+
 
 class LoginController extends BaseContorller
 {
@@ -21,15 +25,15 @@ class LoginController extends BaseContorller
     {
         $jwt = app('auth')->guard('jwt');
         //设置过期时间
-        $jwt->setTTL(60*24);
+        $jwt->setTTL(config('conf.auth.ttl'));
 
-        $user = $jwt->getProvider()->retrieveByCredentials($request->only('name', 'password'));
-        if(!$user){
-            return response()->json(['user_not_found'], 404);
+        if (! $token = $jwt->attempt($request->only('name', 'password'))) {
+            return success(err("用户名或密码错误",10000));
         }
-        $token = $jwt->login($user);
-        $user->refreshToken($token);
-
-        return response()->json(compact('token'));
+        if($token){
+            //更新token
+            $jwt->user()->refreshToken($token);
+            return success(succ(compact('token')));
+        }
     }
 }

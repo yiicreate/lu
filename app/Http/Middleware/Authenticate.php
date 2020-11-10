@@ -10,6 +10,8 @@ use Illuminate\Auth\RequestGuard;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\JWTGuard;
+use function App\Helps\err;
+use function App\Helps\success;
 
 class Authenticate
 {
@@ -42,17 +44,14 @@ class Authenticate
     public function handle($request, Closure $next, $guard = null)
     {
         $token = $request->header('token');
-        try{
-            app("auth")->guard("jwt")->setToken($token)->getPayload();
-        }catch (JWTException $e){
-            $msg = $e->getMessage();
-            if($msg == 'Token has expired'){
-                return response('token过期', 401);
-            }
+
+        $res = app("auth")->guard("jwt")->setToken($token)->getPayload();
+        if($res&&isset($res['exp'])&&$res['exp']<=time()){
+            return success(err('token过期',601));
         }
         $guard =  $this->auth->guard($guard);
         if ($guard->guest()) {
-            return response('请登录', 401);
+            return success(err('用户未登录',101));
         }
         return $next($request);
     }

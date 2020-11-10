@@ -9,41 +9,111 @@
 namespace App\Http\Controllers\Admin;
 
 
-use App\Listeners\EventListener;
-use Illuminate\Auth\Access\Gate;
+use App\Http\Validates\UserValidate;
+use App\Service\UserImp;
+use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Hashing\HashManager;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Route;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\JWTAuth;
-use Tymon\JWTAuth\JWTGuard;
-use Tymon\JWTAuth\Providers\JWT\Lcobucci;
+use function App\Helps\encryPass;
+use function App\Helps\success;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    protected $userImp;
+
+    public function __construct(Request $request,UserImp $userImp)
     {
-        echo "hello";
-        echo $this->user->id;
+        $this->userImp = $userImp;
+        parent::__construct($request);
+//        $this->vValidate(UserValidate::class,$request);
     }
+
+    /**
+     * 获取当前人员信息（包含菜单，角色等信息）
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUser()
+    {
+        $jwt   = app('auth')->guard('jwt');
+        echo $jwt->getProvider()->getHasher()->make(123456);
+        die;
+        $res = $this->userImp->getUser();
+        return success($res);
+    }
+
+    /**
+     * 获取人员信息
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getList()
+    {
+        $id = $this->request->get('id');
+        $res = $this->userImp->getList($id);
+        return success($res);
+    }
+
+    /**
+     * 获取人员信息列表
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getLists()
+    {
+        $params = $this->request->post();
+        $size = $params['pageSize']??15;
+        $res = $this->userImp->getLists($params,$size);
+        return success($res);
+    }
+
+    /**
+     * 新增管理员
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function setOne()
+    {
+        $params = $this->request->post();
+        $res = $this->userImp->addUser($params,$this->user);
+        return success($res);
+    }
+
+    /**
+     * 修改管理员
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function setOneFId()
+    {
+        $params = $this->request->post();
+        $res = $this->userImp->updateUser($params);
+        return success($res);
+    }
+
 
     /**
      * 重置密码
      */
     public function refreshPassword()
     {
-        $jwt = app('auth')->guard('jwt');
-        $haser = $jwt->getProvider()->getHasher()->make(123456789);
-        $this->user->refreshPass($haser);
+        $id = $this->request->get('id');
+        $haser = encryPass(123456789);
+        $res = $this->user->refreshPass($id,$haser);
+        return success($res);
     }
 
     /**
      * 修改密码
      */
-    public function Password()
+    public function resetPassword(Request $request)
     {
-        echo 11333;
-        event(new EventListener(["aaa"]));
+        $params = $this->request->post();
+        $res = $this->user->resetPass($params,$this->user);
+        return success($res);
+    }
+
+    /**
+     * 退出登录
+     */
+    public function logout()
+    {
+        $res = $this->user->refreshToken('');
+        return success($res);
     }
 }
