@@ -5,6 +5,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Helps\AuthUser;
 use Closure;
 use Illuminate\Auth\RequestGuard;
 use Illuminate\Contracts\Auth\Factory as Auth;
@@ -44,8 +45,8 @@ class Authenticate
     public function handle($request, Closure $next, $guard = null)
     {
         $token = $request->header('token');
-
-        $res = app("auth")->guard("jwt")->setToken($token)->getPayload();
+        $auth = new AuthUser();
+        $res = $auth->getToken($token);
         if($res&&isset($res['exp'])&&$res['exp']<=time()){
             return success(err('token过期',601));
         }

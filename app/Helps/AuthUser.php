@@ -8,20 +8,22 @@
 
 namespace App\Helps;
 
-
-use Tymon\JWTAuth\Providers\JWT\Provider;
-
 class AuthUser
 {
     protected $jwt;
 
-    protected $user;
+    protected $user=null;
 
     public function __construct()
     {
         $this->jwt = app('auth')->guard('jwt');
     }
 
+    /**
+     * 用户认证 并返回token
+     * @param array $credentials
+     * @return bool
+     */
     public function attempt(array $credentials = [])
     {
         $this->user = $user = $this->jwt->getProvider()->retrieveByCredentials($credentials);
@@ -48,8 +50,27 @@ class AuthUser
         return false;
     }
 
+    /**
+     * 返回user
+     * @return null
+     */
     public function user()
     {
         return $this->user;
+    }
+
+    /**
+     * 解密token
+     * @param $token
+     * @return array
+     */
+    public function getToken($token)
+    {
+        try{
+            $res = $this->jwt->setToken($token)->getPayload();
+            return $res->toArray();
+        }catch (\Exception $exception){
+            return [];
+        }
     }
 }

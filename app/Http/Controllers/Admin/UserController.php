@@ -34,9 +34,6 @@ class UserController extends Controller
      */
     public function getUser()
     {
-        $jwt   = app('auth')->guard('jwt');
-        echo $jwt->getProvider()->getHasher()->make(123456);
-        die;
         $res = $this->userImp->getUser();
         return success($res);
     }

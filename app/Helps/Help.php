@@ -146,7 +146,7 @@ function image_base64_content($image)
 
 
 /**
- * 统一调用curl方法
+ * 统一调用curl方法(get)
  *
  * @param $url
  * @param $get_data
@@ -214,6 +214,16 @@ function curlPost($url, $post_data)
     return $data;
 }
 
+/**
+ * 导出文件execl
+ * @param string $fileName
+ * @param array $headArr
+ * @param array $data
+ * @return string
+ * @throws \PHPExcel_Exception
+ * @throws \PHPExcel_Reader_Exception
+ * @throws \PHPExcel_Writer_Exception
+ */
 function exportExcel($fileName = '', $headArr = [], $data = [])
 {
     $basePath = config('conf.comm.export');
@@ -332,13 +342,17 @@ function importExcel($file = '', $needImage = false,$image='')
     }
 }
 
+/**
+ * 生成标识
+ * @param string $namespace
+ * @return string
+ */
 function create_guid($namespace = '')
 {
     static $guid = '';
     $uid = uniqid("", true);
     $data = $namespace;
     $data .= $_SERVER['REQUEST_TIME'];
-    $data .= $_SERVER['HTTP_USER_AGENT'];
     $hash = strtoupper(hash('ripemd128', $uid . $guid . md5($data)));
     return $hash;
 }
