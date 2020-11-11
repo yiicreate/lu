@@ -8,6 +8,8 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use function App\Helps\err;
+use function App\Helps\success;
 
 class Handler extends ExceptionHandler
 {
@@ -46,7 +48,14 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $e)
     {
         if($e instanceof HttpException){
-            return response()->json(['没有找到页面'], 404);
+            $err = err("没有找到页面",404);
+            return success($err);
+        }
+        if($e instanceof ValidationException){
+            $errs = $e->errors();
+            $msg = array_shift($errs)[0];
+            $err = err($msg,10002);
+            return success($err);
         }
         return parent::render($request, $e);
     }

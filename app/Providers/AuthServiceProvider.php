@@ -2,12 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\User;
-use App\Service\UserImp;
-use Illuminate\Auth\AuthManager;
-use Illuminate\Support\Facades\Gate;
+use App\Services\UserImp;
 use Illuminate\Support\ServiceProvider;
-use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -35,7 +31,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->app['auth']->viaRequest('api', function ($request) {
             $token = $request->header('token');
             if ($token) {
-                return UserImp::where('api_token', $token)->first(["id","name","api_token"]);
+                return UserImp::where('api_token', $token)->first(["id","name","user_name","sex"]);
             }
         });
     }

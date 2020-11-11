@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\BaseController;
+use http\Client\Request;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
@@ -12,5 +13,4 @@ class Controller extends BaseController
     {
         $this->user = Auth::user();
     }
-    //
 }

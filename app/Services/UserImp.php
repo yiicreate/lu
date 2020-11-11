@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Service;
+namespace App\Services;
 
 use App\Models\User;
-use App\Services\RoleUserImp;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use function App\Helps\encryPass;

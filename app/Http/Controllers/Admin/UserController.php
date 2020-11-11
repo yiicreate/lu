@@ -8,11 +8,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-
-use App\Http\Validates\UserValidate;
-use App\Service\UserImp;
-use Illuminate\Hashing\BcryptHasher;
-use Illuminate\Hashing\HashManager;
+use App\Services\UserImp;
 use Illuminate\Http\Request;
 use function App\Helps\encryPass;
 use function App\Helps\success;
@@ -21,10 +17,10 @@ class UserController extends Controller
 {
     protected $userImp;
 
-    public function __construct(Request $request,UserImp $userImp)
+
+    public function __construct(UserImp $userImp)
     {
         $this->userImp = $userImp;
-        parent::__construct($request);
 //        $this->vValidate(UserValidate::class,$request);
     }
 

@@ -26,7 +26,8 @@
         },
         "files": [
             "app/Helps/Help.php",
-            "app/Helps/Token.php"
+            "app/Helps/AuthUser.php",
+            "app/Helps/Validates.php"
         ]
     },
     "autoload-dev": {
